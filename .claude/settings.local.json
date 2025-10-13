@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(npm test:*)",
+      "Bash(curl:*)",
+      "Bash(node test-api-endpoints.js)",
+      "Bash(findstr:*)",
+      "Bash(npm run test:api:*)",
+      "Bash(npm run test:all:*)",
+      "Bash(npm run test:components:*)",
+      "Read(//c/Users/samukeloj/Documents/Data Science/dev/**)",
+      "Bash(find:*)",
+      "Bash(for file in favicon.ico favicon.svg favicon-96x96.png apple-touch-icon.png web-app-manifest-192x192.png web-app-manifest-512x512.png)",
+      "Bash(do if [ -f \"$file\" ])",
+      "Bash(then echo \"✓ $file\")",
+      "Bash(else echo \"✗ $file (MISSING)\")",
+      "Bash(fi)",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
