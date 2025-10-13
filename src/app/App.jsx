@@ -348,7 +348,7 @@ export default function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="brand">SA Risk — Indicator Viewer</div>
+        <div className="brand">SA Crime Stats Profiler — Indicator Viewer</div>
       </header>
 
       <main className="App-main">
