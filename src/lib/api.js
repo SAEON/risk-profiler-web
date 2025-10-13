@@ -1,8 +1,12 @@
 // src/lib/api.js
 
 // Base URL (same as before) — set REACT_APP_API_URL in your .env
-export const API_BASE =
-  process.env.REACT_APP_API_URL || "/crime-profiler/api";
+const RAW_API_BASE = process.env.REACT_APP_API_URL || "/crime-profiler/api";
+
+// Convert to absolute URL if needed
+export const API_BASE = RAW_API_BASE.startsWith('http')
+  ? RAW_API_BASE
+  : `${window.location.origin}${RAW_API_BASE}`;
 
 /** Build a URL from path + params against API_BASE */
 function buildUrl(path, params) {
