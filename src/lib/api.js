@@ -10,7 +10,9 @@ export const API_BASE = RAW_API_BASE.startsWith('http')
 
 /** Build a URL from path + params against API_BASE */
 function buildUrl(path, params) {
-  const url = new URL(path, API_BASE);
+  // Remove leading slash from path to make it relative to API_BASE
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const url = new URL(cleanPath, API_BASE.endsWith('/') ? API_BASE : API_BASE + '/');
   if (params) {
     Object.entries(params).forEach(([k, v]) => {
       if (v !== undefined && v !== null && v !== "") {
