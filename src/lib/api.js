@@ -1,10 +1,25 @@
 // src/lib/api.js
 
-export const API_BASE =
+export const RAW_API_BASE =
   process.env.REACT_APP_API_URL || "/crime-profiler/api";
 
+const STRIPPED = RAW_API_BASE.endsWith("/")
+  ? RAW_API_BASE.slice(0, -1)
+  : RAW_API_BASE;
+
+
+const ABS_API_BASE = /^https?:\/\//i.test(STRIPPED)
+  ? STRIPPED
+  : `${window.location.origin}${STRIPPED}`;
+
+
 function buildUrl(path, params) {
-  const url = new URL(path, API_BASE);
+  // ensure path joins cleanly
+  const url = new URL(
+    path.startsWith("/") ? path : `/${path}`,
+    ABS_API_BASE + "/"
+  );
+
   if (params) {
     Object.entries(params).forEach(([k, v]) => {
       if (v !== undefined && v !== null && v !== "") {
@@ -14,6 +29,7 @@ function buildUrl(path, params) {
   }
   return url;
 }
+
 
 /** JSON GET helper (unchanged idea, just inlined) */
 export async function getJson(path, params) {
@@ -69,7 +85,7 @@ export const api = {
 
   /* ======================  Tiles  ===================== */
   // Vector tile URL helper for the map
-  tileURL: (z, x, y) => `${API_BASE}/tiles/${z}/${x}/${y}.mvt`,
+  tileURL: (z, x, y) => `${ABS_API_BASE}/tiles/${z}/${x}/${y}.mvt`,
 };
 
 export default api;
