@@ -29,7 +29,7 @@ export default function MunicipalitySearch({ onSelect }) {
       }
     })();
     return () => { cancelled = true; };
-  }, [api]);
+  }, []);
 
   // normalize and filter
   const norm = (s) => String(s || "").toLowerCase().normalize("NFKD");
@@ -40,7 +40,7 @@ export default function MunicipalitySearch({ onSelect }) {
       .map((m) => {
         const name = norm(m.name);
         const code = String(m.code || "");
-        // simple scoring: startsWith > includes(code) > includes(name)
+        
         let score = 0;
         if (name.startsWith(qq)) score += 4;
         if (name.includes(qq)) score += 1;
@@ -147,6 +147,7 @@ export default function MunicipalitySearch({ onSelect }) {
                 type="button"
                 className="searchbox__item"
                 role="option"
+                aria-selected="false"
                 onClick={() => handlePick(m)}
                 onKeyDown={(e) => onItemKeyDown(e, m)}
                 title={m.name}
