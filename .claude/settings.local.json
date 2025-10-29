@@ -16,7 +16,8 @@
       "Bash(then echo \"✓ $file\")",
       "Bash(else echo \"✗ $file (MISSING)\")",
       "Bash(fi)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

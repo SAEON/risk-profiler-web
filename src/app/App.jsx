@@ -1,5 +1,6 @@
 // src/app/App.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/App.css";
 
 // Centralized API
@@ -349,6 +350,9 @@ export default function App() {
     <div className="App">
       <header className="App-header">
         <div className="brand">SA Crime Stats Profiler — Indicator Viewer</div>
+        <nav className="App-nav">
+          <Link to="/import" className="nav-link">Import Data</Link>
+        </nav>
       </header>
 
       <main className="App-main">

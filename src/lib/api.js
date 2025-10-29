@@ -78,6 +78,39 @@ export const api = {
   /* ======================  Tiles  ===================== */
   // Vector tile URL helper for the map
   tileURL: (z, x, y) => `${API_BASE}/tiles/${z}/${x}/${y}.mvt`,
+
+  /* ==================  Import Crime Stats  =================== */
+  // GET /import/crime-stats/themes -> { themes, totalThemes, totalIndicators }
+  getImportThemes: () => getJson("/import/crime-stats/themes"),
+
+  // GET /import/crime-stats/template?themes=Contact crimes,Sexual Offences&year=2024
+  // Returns Excel file (Blob)
+  downloadImportTemplate: async (themes, year) => {
+    const params = { themes: themes.join(',') };
+    if (year) params.year = year;
+    const blob = await getBlob("/import/crime-stats/template", params);
+    return blob;
+  },
+
+  // POST /import/crime-stats (multipart/form-data)
+  // Returns { success, summary, details?, errors? }
+  uploadCrimeStats: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const url = buildUrl("/import/crime-stats");
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.statusText);
+      throw new Error(text);
+    }
+
+    return res.json();
+  },
 };
 
 export default api;
