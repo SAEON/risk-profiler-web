@@ -349,7 +349,7 @@ export default function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="brand">SA Crime Stats Profiler — Indicator Viewer</div>
+        <div className="brand">SA Risk Profiler — Indicator Viewer</div>
         <nav className="App-nav">
           <Link to="/import" className="nav-link">Import Data</Link>
         </nav>

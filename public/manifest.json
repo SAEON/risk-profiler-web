@@ -1,6 +1,6 @@
 {
-  "short_name": "SA Crime Stats",
-  "name": "SA Crime Stats Profiler - Indicator Viewer",
+  "short_name": "SA Risk",
+  "name": "SA Risk Profiler - Indicator Viewer",
   "icons": [
     {
       "src": "favicon.svg",
