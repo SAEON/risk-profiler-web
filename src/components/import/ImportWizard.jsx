@@ -68,8 +68,8 @@ export default function ImportWizard() {
   return (
     <div className="import-wizard">
       <header className="wizard-header">
-        <h1>Import Crime Statistics</h1>
-        <p className="subtitle">Upload crime data using Excel templates</p>
+        <h1>Import Indicator Data</h1>
+        <p className="subtitle">Upload indicator data using Excel templates</p>
         <Stepper />
       </header>
 

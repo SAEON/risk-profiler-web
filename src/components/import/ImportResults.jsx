@@ -76,7 +76,7 @@ export default function ImportResults({ result, onReset }) {
       {success ? (
         <div className="banner success">
           <h2>✓ Import Successful!</h2>
-          <p>Your crime statistics data has been imported successfully.</p>
+          <p>Your indicator data has been imported successfully.</p>
           {summary && (
             <div className="banner-summary">
               <strong>
@@ -213,7 +213,7 @@ export default function ImportResults({ result, onReset }) {
         <div className="next-steps-message">
           <h3>✓ Data Successfully Imported</h3>
           <p>
-            Your crime statistics have been added to the database.
+            Your indicator data has been added to the database.
             You can now view the updated data on the map or import additional data.
           </p>
         </div>

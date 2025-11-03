@@ -54,7 +54,7 @@ export default function TemplateDownload({ selectedThemes, onTemplateDownloaded,
     <div className="template-download">
       <h2>Download Excel Template</h2>
       <p className="instructions">
-        Download the Excel template for the selected crime themes. Fill in the data and upload it in the next step.
+        Download the Excel template for the selected data themes. Fill in the data and upload it in the next step.
       </p>
 
       <div className="selected-themes">

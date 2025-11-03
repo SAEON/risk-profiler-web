@@ -57,7 +57,7 @@ export default function ThemeSelector({ onThemesSelected }) {
   if (loading) {
     return (
       <div className="theme-selector loading">
-        <p>Loading crime themes...</p>
+        <p>Loading data themes...</p>
       </div>
     );
   }
@@ -73,9 +73,9 @@ export default function ThemeSelector({ onThemesSelected }) {
 
   return (
     <div className="theme-selector">
-      <h2>Select Crime Themes</h2>
+      <h2>Select Data Themes</h2>
       <p className="instructions">
-        Choose one or more crime themes to download an Excel template for data import.
+        Choose one or more data themes to download an Excel template for data import.
       </p>
 
       <div className="theme-grid">
