@@ -27,15 +27,24 @@ export default function MLMap({ data = [], bins = [], onViewChange }) {
   const buildMatch = (rows, thresholds) => {
     const valid = rows.filter((r) => Number.isFinite(Number(r.value)));
     if (!valid.length) return ["to-color", "#cbd5e1"]; // constant fallback
+
+    // This prevents MapLibre "Branch labels must be unique" errors
+    const codeMap = new Map();
+    for (const row of valid) {
+      codeMap.set(String(row.code), row.value);
+    }
+    const uniqueEntries = Array.from(codeMap.entries());
+
     const T = [...thresholds].sort((a, b) => b.min - a.min);
     const colorFor = (v) => {
       const n = Number(v);
       for (const b of T) if (n >= Number(b.min)) return b.color;
       return "#cbd5e1";
     };
+
     const expr = ["match", ["get", "code"]];
-    for (const { code, value } of valid) {
-      expr.push(String(code), colorFor(value));
+    for (const [code, value] of uniqueEntries) {
+      expr.push(code, colorFor(value));
     }
     expr.push("#cbd5e1");
     return expr;
