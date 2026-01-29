@@ -11,8 +11,10 @@ import ImportResults from "./ImportResults";
  * Step 2: Download template
  * Step 3: Upload filled template
  * Step 4: View results
+ *
+ * @param {object} category - Category configuration from importCategories.js
  */
-export default function ImportWizard() {
+export default function ImportWizard({ category }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedThemes, setSelectedThemes] = useState([]);
   const [importResult, setImportResult] = useState(null);
@@ -68,16 +70,22 @@ export default function ImportWizard() {
   return (
     <div className="import-wizard">
       <header className="wizard-header">
-        <h1>Import Indicator Data</h1>
-        <p className="subtitle">Upload indicator data using Excel templates</p>
+        <h1>{category?.labels?.pageTitle || "Import Indicator Data"}</h1>
+        <p className="subtitle">{category?.labels?.pageSubtitle || "Upload indicator data using Excel templates"}</p>
         <Stepper />
       </header>
 
       <main className="wizard-content">
-        {currentStep === 1 && <ThemeSelector onThemesSelected={handleThemesSelected} />}
+        {currentStep === 1 && (
+          <ThemeSelector
+            category={category}
+            onThemesSelected={handleThemesSelected}
+          />
+        )}
 
         {currentStep === 2 && (
           <TemplateDownload
+            category={category}
             selectedThemes={selectedThemes}
             onTemplateDownloaded={handleTemplateDownloaded}
             onBack={() => setCurrentStep(1)}
@@ -86,6 +94,7 @@ export default function ImportWizard() {
 
         {currentStep === 3 && (
           <FileUploader
+            category={category}
             onUploadComplete={handleUploadComplete}
             onBack={() => setCurrentStep(2)}
           />

@@ -4,23 +4,25 @@ import api from "../../lib/api";
 
 /**
  * Step 1: Theme Selection
- * Fetches crime themes and allows user to select one or more
+ * Fetches themes for the selected category and allows user to select one or more
  * Props:
+ *  - category: Category configuration object from importCategories.js
  *  - onThemesSelected: (themes) => void - Callback when user clicks Next
  */
-export default function ThemeSelector({ onThemesSelected }) {
+export default function ThemeSelector({ category, onThemesSelected }) {
   const [themes, setThemes] = useState([]);
   const [selectedThemes, setSelectedThemes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch themes on mount
+  // Fetch themes on mount or when category changes
   useEffect(() => {
     const fetchThemes = async () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await api.getImportThemes();
+        // Use category-specific API endpoint
+        const data = await api.getImportThemesByCategory(category.id);
         setThemes(data.themes || []);
       } catch (err) {
         console.error("Failed to fetch import themes:", err);
@@ -30,8 +32,10 @@ export default function ThemeSelector({ onThemesSelected }) {
       }
     };
 
-    fetchThemes();
-  }, []);
+    if (category?.id) {
+      fetchThemes();
+    }
+  }, [category?.id]);
 
   // Toggle theme selection
   const handleToggleTheme = (themeName) => {
@@ -73,9 +77,9 @@ export default function ThemeSelector({ onThemesSelected }) {
 
   return (
     <div className="theme-selector">
-      <h2>Select Data Themes</h2>
+      <h2>{category?.labels?.themeSelectTitle || "Select Data Themes"}</h2>
       <p className="instructions">
-        Choose one or more data themes to download an Excel template for data import.
+        {category?.labels?.themeSelectDescription || "Choose one or more data themes to download an Excel template for data import."}
       </p>
 
       <div className="theme-grid">

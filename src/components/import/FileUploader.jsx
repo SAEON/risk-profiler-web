@@ -6,10 +6,11 @@ import api from "../../lib/api";
  * Step 3: File Upload
  * Allows user to upload filled Excel template
  * Props:
+ *  - category: Category configuration object from importCategories.js
  *  - onUploadComplete: (result) => void - Callback with upload result
  *  - onBack: () => void - Callback to go back to template download
  */
-export default function FileUploader({ onUploadComplete, onBack }) {
+export default function FileUploader({ category, onUploadComplete, onBack }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -72,7 +73,7 @@ export default function FileUploader({ onUploadComplete, onBack }) {
     }
   };
 
-  // Handle upload
+  // Handle upload using category-specific endpoint
   const handleUpload = async () => {
     if (!file) return;
 
@@ -80,7 +81,8 @@ export default function FileUploader({ onUploadComplete, onBack }) {
       setUploading(true);
       setError(null);
 
-      const result = await api.uploadCrimeStats(file);
+      // Use category-specific API endpoint
+      const result = await api.uploadImportDataByCategory(category.id, file);
       onUploadComplete(result);
     } catch (err) {
       console.error("Upload failed:", err);
@@ -100,7 +102,7 @@ export default function FileUploader({ onUploadComplete, onBack }) {
     <div className="file-uploader">
       <h2>Upload Filled Template</h2>
       <p className="instructions">
-        Upload the Excel file you filled with crime statistics data.
+        {category?.labels?.uploadInstructions || "Upload the Excel file you filled with indicator data."}
       </p>
 
       <div

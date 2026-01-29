@@ -116,6 +116,114 @@
   margin-bottom: 1.5rem;
 }
 
+/* ============ Category Selector ============ */
+.category-selector h2 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+  text-align: center;
+}
+
+.category-selector .instructions {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.category-tile {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.category-tile:hover {
+  border-color: #3b82f6;
+  background: #f0f9ff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+}
+
+.category-tile:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.category-icon {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.category-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.category-content {
+  flex: 1;
+}
+
+.category-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 1.25rem;
+}
+
+.category-content p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.category-arrow {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.2s;
+}
+
+.category-arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+.category-tile:hover .category-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Category-specific colors on hover */
+.category-tile[data-category="crime-stats"]:hover {
+  border-color: #ef4444;
+}
+
+.category-tile[data-category="crime-stats"]:hover .category-arrow {
+  color: #ef4444;
+}
+
+.category-tile[data-category="socio-economic"]:hover {
+  border-color: #3b82f6;
+}
+
+.category-tile[data-category="socio-economic"]:hover .category-arrow {
+  color: #3b82f6;
+}
+
 /* ============ Theme Selector ============ */
 .theme-selector h2 {
   margin: 0 0 1rem 0;
@@ -696,6 +804,19 @@
 
   .wizard-content {
     padding: 1rem;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .category-tile {
+    padding: 1.5rem;
+  }
+
+  .category-icon {
+    width: 48px;
+    height: 48px;
   }
 
   .theme-grid {

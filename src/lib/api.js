@@ -1,5 +1,7 @@
 // src/lib/api.js
 
+import { getCategoryConfig } from "../config/importCategories";
+
 // Base URL (same as before) — set REACT_APP_API_URL in your .env
 const RAW_API_BASE = process.env.REACT_APP_API_URL || "/crime-profiler/api";
 
@@ -79,7 +81,65 @@ export const api = {
   // Vector tile URL helper for the map
   tileURL: (z, x, y) => `${API_BASE}/tiles/${z}/${x}/${y}.mvt`,
 
-  /* ==================  Import Crime Stats  =================== */
+  /* ==================  Import (Generic/Parameterized)  =================== */
+
+  /**
+   * GET /import/{category}/themes -> { themes, totalThemes, totalIndicators }
+   * @param {string} categoryId - Category ID (e.g., 'crime-stats', 'socio-economic')
+   */
+  getImportThemesByCategory: (categoryId) => {
+    const config = getCategoryConfig(categoryId);
+    if (!config) throw new Error(`Unknown import category: ${categoryId}`);
+    return getJson(config.endpoints.themes);
+  },
+
+  /**
+   * GET /import/{category}/template?themes=Theme1,Theme2&year=2024
+   * Returns Excel file (Blob)
+   * @param {string} categoryId - Category ID
+   * @param {string[]} themes - Array of theme names
+   * @param {number|null} year - Optional year
+   */
+  downloadImportTemplateByCategory: async (categoryId, themes, year) => {
+    const config = getCategoryConfig(categoryId);
+    if (!config) throw new Error(`Unknown import category: ${categoryId}`);
+
+    const params = { themes: themes.join(',') };
+    if (year) params.year = year;
+    const blob = await getBlob(config.endpoints.template, params);
+    return blob;
+  },
+
+  /**
+   * POST /import/{category} (multipart/form-data)
+   * Returns { success, summary, details?, errors? }
+   * @param {string} categoryId - Category ID
+   * @param {File} file - Excel file to upload
+   */
+  uploadImportDataByCategory: async (categoryId, file) => {
+    const config = getCategoryConfig(categoryId);
+    if (!config) throw new Error(`Unknown import category: ${categoryId}`);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const url = buildUrl(config.endpoints.upload);
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.statusText);
+      throw new Error(text);
+    }
+
+    return res.json();
+  },
+
+  /* ==================  Import Crime Stats (Legacy - for backward compatibility)  =================== */
+  // These can be removed after all usages are migrated to the parameterized versions
+
   // GET /import/crime-stats/themes -> { themes, totalThemes, totalIndicators }
   getImportThemes: () => getJson("/import/crime-stats/themes"),
 

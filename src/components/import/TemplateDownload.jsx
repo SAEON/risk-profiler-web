@@ -6,35 +6,38 @@ import api from "../../lib/api";
  * Step 2: Download Template
  * Allows user to download Excel template for selected themes
  * Props:
+ *  - category: Category configuration object from importCategories.js
  *  - selectedThemes: string[] - Array of theme names
  *  - onTemplateDownloaded: () => void - Callback when user clicks Next
  *  - onBack: () => void - Callback to go back to theme selection
  */
-export default function TemplateDownload({ selectedThemes, onTemplateDownloaded, onBack }) {
+export default function TemplateDownload({ category, selectedThemes, onTemplateDownloaded, onBack }) {
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [error, setError] = useState(null);
   const [year, setYear] = useState("");
 
-  // Handle download
+  // Handle download using category-specific endpoint
   const handleDownload = async () => {
     try {
       setDownloading(true);
       setError(null);
 
-      const blob = await api.downloadImportTemplate(selectedThemes, year || null);
+      // Use category-specific API endpoint
+      const blob = await api.downloadImportTemplateByCategory(category.id, selectedThemes, year || null);
 
       // Create download link
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
 
-      // Generate filename
+      // Generate filename using category-specific prefix
+      const filenamePrefix = category?.labels?.templateFilenamePrefix || "import-template";
       const themesSlug = selectedThemes
         .map((t) => t.replace(/[^a-z0-9]/gi, "_").toLowerCase())
         .join("-");
       const yearSuffix = year ? `_${year}` : "";
-      link.download = `crime-stats-template-${themesSlug}${yearSuffix}.xlsx`;
+      link.download = `${filenamePrefix}-${themesSlug}${yearSuffix}.xlsx`;
 
       document.body.appendChild(link);
       link.click();
